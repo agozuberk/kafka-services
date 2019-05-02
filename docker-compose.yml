@@ -1,0 +1,149 @@
+version: "3"
+services:
+  istanbul-server:
+    image: agozuberk/city-server
+    ports:
+      - "7010:7010"
+    networks:
+      - server-net
+    environment:
+      - SERVER_CITY=Istanbul
+      - MIN_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=1000
+      - MAX_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=30000
+    volumes:
+      - ./log-files:/usr/app/logs
+ 
+  tokyo-server:
+    image: agozuberk/city-server
+    ports:
+      - "7011:7011"
+    networks:
+      - server-net 
+    environment:
+      - SERVER_CITY=Tokyo
+      - MIN_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=1000
+      - MAX_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=30000
+    volumes:
+      - ./log-files:/usr/app/logs
+
+  moskow-server:
+    image: agozuberk/city-server
+    ports:
+      - "7012:7012"
+    networks:
+      - server-net 
+    environment:
+      - SERVER_CITY=Moscow   
+      - MIN_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=1000
+      - MAX_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=30000   
+    volumes:
+      - ./log-files:/usr/app/logs
+
+  beijing-server:
+    image: agozuberk/city-server
+    ports:
+      - "7013:7013"
+    networks:
+      - server-net 
+    environment:
+      - SERVER_CITY=Beijing   
+      - MIN_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=1000
+      - MAX_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=30000   
+    volumes:
+      - ./log-files:/usr/app/logs
+
+  london-server:
+    image: agozuberk/city-server
+    ports:
+      - "7014:7014"
+    networks:
+      - server-net 
+    environment:
+      - SERVER_CITY=London   
+      - MIN_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=1000
+      - MAX_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=30000   
+    volumes:
+      - ./log-files:/usr/app/logs
+
+
+  log-listener:
+    image: agozuberk/log-listener
+    ports:
+      - "7000:7000"
+    networks:
+      - server-net 
+    environment:
+      - SERVICE_LIST_TO_LISTEN=Istanbul,Moscow,Tokyo,Beijing,London
+    links:
+        - kafka-producer
+    depends_on:
+        - kafka-producer
+    volumes:
+      - ./log-files:/usr/app/logs
+
+  kafka-producer:
+    image: agozuberk/kafka-producer
+    ports:
+      - "7070:7070"
+    networks:
+      - server-net 
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
+
+  kafka-consumer-console:
+    image: agozuberk/kafka-consumer
+    ports:
+      - "8090:8090"
+    networks:
+      - server-net
+      
+  mongodb-server:
+    image: agozuberk/mongodb-server
+    environment:
+        - SPRING_DATA_MONGODB_HOST=mongodb
+        - SPRING_DATA_MONGODB_PORT=27017
+        - SPRING_DATA_MONGODB_DATABASE=logdb
+    ports:
+        - 8085:8085
+    links:
+        - mongodb
+    depends_on:
+        - mongodb
+    networks:
+        - server-net
+
+  mongodb:
+    image: mongo:latest
+    container_name: "mongodb"
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    volumes:
+      - ./data/db:/data/db
+    ports:
+        - 27017:27017
+    networks:
+        - server-net
+
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    ports:
+      - '2181:2181'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      - server-net
+  kafka:
+    image: 'bitnami/kafka:latest'
+    ports:
+      - '9092:9092'
+    environment:
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    networks:
+      - server-net
+
+networks:
+  server-net:
+    driver: bridge
+    
