@@ -9,7 +9,7 @@ services:
     environment:
       - SERVER_CITY=Istanbul
       - MIN_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=1000
-      - MAX_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=30000
+      - MAX_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=10000
     volumes:
       - ./log-files:/usr/app/logs
  
@@ -22,7 +22,7 @@ services:
     environment:
       - SERVER_CITY=Tokyo
       - MIN_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=1000
-      - MAX_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=30000
+      - MAX_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=10000
     volumes:
       - ./log-files:/usr/app/logs
 
@@ -35,7 +35,7 @@ services:
     environment:
       - SERVER_CITY=Moscow   
       - MIN_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=1000
-      - MAX_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=30000   
+      - MAX_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=10000   
     volumes:
       - ./log-files:/usr/app/logs
 
@@ -48,7 +48,7 @@ services:
     environment:
       - SERVER_CITY=Beijing   
       - MIN_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=1000
-      - MAX_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=30000   
+      - MAX_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=10000   
     volumes:
       - ./log-files:/usr/app/logs
 
@@ -61,7 +61,7 @@ services:
     environment:
       - SERVER_CITY=London   
       - MIN_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=1000
-      - MAX_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=30000   
+      - MAX_SLEEP_DURATION_BETWEEN_LOGS_MILISECONDS=10000   
     volumes:
       - ./log-files:/usr/app/logs
 
